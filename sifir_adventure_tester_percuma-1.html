@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173b72">
+<title>Sifir Adventure — Tester Percuma</title>
+<style>
+:root{--navy:#173b72;--blue:#2867c7;--gold:#ffd166;--ink:#17233b;--green:#23845b;--red:#b83c4b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,#e8f4ff,#fff8e7);color:var(--ink);min-height:100vh}
+header{background:var(--navy);color:#fff;padding:22px 16px 26px;text-align:center;border-radius:0 0 28px 28px}.logo{font-size:38px}h1{font-size:clamp(25px,6vw,36px);margin:4px 0}header p{margin:6px 0 0;color:#dceaff}
+main{max-width:720px;margin:18px auto;padding:0 14px 32px}.panel{background:#fff;border:1px solid #dce7f5;border-radius:22px;padding:18px;box-shadow:0 8px 24px #173b7212;margin-bottom:14px}
+h2{font-size:20px;margin:0 0 12px}.pill{display:inline-block;border-radius:999px;background:#dff7e8;color:#17643e;padding:5px 10px;font-weight:800;font-size:13px}
+.tables{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.tablebtn{border:2px solid #c9dcf6;border-radius:14px;background:#f7fbff;color:var(--navy);padding:13px 4px;font-weight:800;font-size:16px;cursor:pointer}.tablebtn.active{background:var(--navy);color:white;border-color:var(--navy)}.tablebtn.locked{opacity:.82;background:#f2f4f8;color:#687387;border-color:#d6dce6}
+.note{font-size:13px;color:#56657a;margin:10px 0 0}.status{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:700}.stars{color:#d79b00;font-size:22px;letter-spacing:2px}
+.question{font-size:clamp(34px,9vw,52px);font-weight:900;text-align:center;margin:18px 0 8px;color:var(--navy)}.sub{text-align:center;color:#64738a;margin:0 0 16px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.answer{border:2px solid #d6e4f5;border-radius:15px;background:#f7fbff;padding:15px 8px;font-size:23px;font-weight:800;color:var(--navy);cursor:pointer}.answer:disabled{cursor:default;opacity:.85}
+.feedback{min-height:28px;text-align:center;font-weight:750;margin:12px 0 4px}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}button.primary,button.secondary{border:0;border-radius:14px;padding:13px 18px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#e9f1fd;color:var(--navy)}button:disabled{opacity:.5;cursor:not-allowed}
+.overlay{position:fixed;inset:0;background:#10264dcc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5}.modal{max-width:420px;width:100%;background:#fff;border-radius:24px;padding:24px;text-align:center;box-shadow:0 20px 60px #0003}.lockicon{font-size:48px}.modal h2{margin:8px 0}.modal p{line-height:1.5;color:#526176}.hidden{display:none!important}footer{text-align:center;color:#63718a;font-size:12px;padding:0 16px 22px}
+@media(min-width:560px){.tables{grid-template-columns:repeat(6,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="logo">🚀 ⭐</div><h1>Sifir Adventure</h1><p>Tester percuma • Cuba sifir 2 dahulu</p></header>
+<main>
+<section class="panel">
+<div class="status"><h2>🗺️ Pilih sifir</h2><span class="pill">Sifir 2 percuma</span></div>
+<div class="tables" id="tables"></div>
+<p class="note">Sifir 2 boleh dimainkan secara percuma. Sifir 3 hingga 12 dikunci untuk versi penuh. Dalam versi penuh nanti, sifir seterusnya tidak memerlukan 3 bintang untuk dibuka.</p>
+</section>
+<section class="panel" id="game">
+<div class="status"><span id="tableTitle">Tester percuma — Sifir 2</span><span class="stars" id="stars">☆☆☆</span></div>
+<div class="question" id="question">2 × 1 = ?</div><p class="sub" id="progress">Soalan 1 daripada 10</p>
+<div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="row"><button class="primary" id="next" disabled>Soalan seterusnya ➜</button><button class="secondary" id="restart">Mula semula</button></div>
+</section>
+<section class="panel"><h2>🏆 Keputusan tester</h2><div class="status"><span>Jumlah jawapan betul</span><strong id="totalCorrect">0</strong></div><p class="note">Bintang untuk sifir 2: 3 bintang jika 10/10 betul, 2 bintang jika 8–9 betul, 1 bintang jika 5–7 betul. Bintang tidak diperlukan untuk mencuba semula.</p></section>
+</main>
+<div class="overlay hidden" id="lockModal" role="dialog" aria-modal="true" aria-labelledby="lockTitle">
+<div class="modal"><div class="lockicon">🔒</div><h2 id="lockTitle">Sifir ini dikunci</h2><p id="lockText">Sifir 3 hingga 12 tersedia dalam permainan penuh Sifir Adventure.</p><p><strong>Permainan penuh: RM12.90</strong></p><p class="note">Ini hanya paparan tester. Pembayaran belum disambungkan dan tiada bayaran akan dikenakan di sini.</p><div class="row"><button class="primary" id="closeModal">Kembali ke tester</button></div></div>
+</div>
+<footer>Tester percuma Sifir Adventure • Versi percubaan sahaja</footer>
+<script>
+const nums=[2,3,4,5,6,7,8,9,10,11,12];let idx=0,correct=0,total=0,questions=[],answered=false;
+const $=id=>document.getElementById(id);
+function buildTables(){$('tables').innerHTML='';nums.forEach(n=>{const b=document.createElement('button');b.className='tablebtn'+(n===2?' active':' locked');b.textContent=(n===2?'🟢 ':'🔒 ')+n;b.setAttribute('aria-label',n===2?'Sifir 2 percuma':'Sifir '+n+' dikunci');b.onclick=()=>n===2?start():showLock(n);$('tables').appendChild(b)})}
+function showLock(n){$('lockText').textContent='Sifir '+n+' hingga 12 tersedia dalam permainan penuh Sifir Adventure. Tester percuma hanya merangkumi sifir 2.';$('lockModal').classList.remove('hidden')}
+function makeQuestions(){questions=Array.from({length:10},(_,i)=>({a:2,b:i+1,ans:2*(i+1)}));for(let i=questions.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[questions[i],questions[j]]=[questions[j],questions[i]]}}
+function start(){idx=0;correct=0;answered=false;makeQuestions();$('tableTitle').textContent='Tester percuma — Sifir 2';$('stars').textContent='☆☆☆';$('feedback').textContent='';$('feedback').className='feedback';render()}
+function render(){let q=questions[idx];$('question').textContent=q.a+' × '+q.b+' = ?';$('progress').textContent='Soalan '+(idx+1)+' daripada 10';$('answers').innerHTML='';let opts=new Set([q.ans]);while(opts.size<4){let v=q.ans+Math.floor(Math.random()*17)-8;if(v>0)opts.add(v)}[...opts].sort(()=>Math.random()-.5).forEach(v=>{let b=document.createElement('button');b.className='answer';b.textContent=v;b.onclick=()=>choose(v);$('answers').appendChild(b)});$('next').disabled=true;$('next').textContent='Soalan seterusnya ➜';answered=false}
+function choose(v){if(answered)return;answered=true;const q=questions[idx];document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(Number(b.textContent)===q.ans)b.style.borderColor='#23845b'});if(v===q.ans){correct++;total++;$('feedback').textContent='Hebat! Jawapan betul! 🎉';$('feedback').className='feedback good'}else{$('feedback').textContent='Belum tepat. Jawapan yang betul ialah '+q.ans+'. Terus cuba!';$('feedback').className='feedback bad'}$('totalCorrect').textContent=total;$('next').disabled=false;$('next').textContent=idx===9?'Lihat keputusan 🏆':'Soalan seterusnya ➜'}
+function next(){if(!answered)return;if(idx<9){idx++;render();$('feedback').textContent='';$('feedback').className='feedback'}else{let s=correct===10?3:correct>=8?2:correct>=5?1:0;$('stars').textContent='★'.repeat(s)+'☆'.repeat(3-s);$('question').textContent=correct+'/10 betul!';$('progress').textContent='Tester sifir 2 selesai';$('answers').innerHTML='';$('feedback').textContent=s===3?'Cemerlang! 3 bintang! 🌟':s===2?'Bagus! Anda mendapat 2 bintang.':'Syabas kerana mencuba! Cuba lagi untuk tambah bintang.';$('feedback').className='feedback '+(s?'good':'');$('next').textContent='Cuba sifir 2 lagi';$('next').disabled=false;$('next').onclick=()=>{$('next').onclick=next;start()}}}
+$('next').onclick=next;$('restart').onclick=start;$('closeModal').onclick=()=>$('lockModal').classList.add('hidden');$('lockModal').addEventListener('click',e=>{if(e.target===$('lockModal'))$('lockModal').classList.add('hidden')});buildTables();start();
+</script>
+</body>
+</html>
